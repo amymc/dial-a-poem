@@ -5,7 +5,7 @@ import random
 import time
 # import RPi.GPIO as GPIO
 
-track_names = ["vajra-kisses", "pressure", "cemetery-hill", "green-automobile", "mushroom_haiku"]
+track_names = ["vajra-kisses", "pressure", "cemetery-hill", "green-automobile", "mushroom_haiku", "excerpt-from-i-remember"]
 
 def play_random_track():
     randTrack = random.choice(track_names)
