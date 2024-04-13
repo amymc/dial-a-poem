@@ -5,12 +5,12 @@ import random
 import time
 import RPi.GPIO as GPIO
 
-track_names = ["vajra-kisses", "pressure", "cemetery-hill"]
+track_names = ["vajra-kisses", "pressure", "cemetery-hill", "green-automobile"]
 
 def play_random_track():
     randTrack = random.choice(track_names)
     # print(randTrack)
-    print("https://github.com/amymc/push-a-poem/blob/master/% s.mp3?raw=true" % (randTrack))
+    print("https://github.com/amymc/push-a-poem/blob/master/tracks% s.mp3?raw=true" % (randTrack))
     p = vlc.MediaPlayer(randTrack)
     p.play()
 
