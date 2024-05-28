@@ -15,16 +15,16 @@ on_hook = True
 p = None
 
 track_map = {
-    0: "vajra-kisses",
-    1: "pressure",
-    2: "cemetery-hill",
-    3: "green-automobile",
-    4: "mushroom-haiku",
-    5: "excerpt-from-i-remember",
-    6: "poems",
-    7: "the-sonnets",
-    8: "how-the-sestina-yawn-works",
-    9: "geography",
+    "0": "vajra-kisses",
+    "1": "pressure",
+    "2": "cemetery-hill",
+    "3": "green-automobile",
+    "4": "mushroom-haiku",
+    "5": "excerpt-from-i-remember",
+    "6": "poems",
+    "7": "the-sonnets",
+    "8": "how-the-sestina-yawn-works",
+    "9": "geography",
 }
 
 
@@ -45,6 +45,8 @@ def stop_counting():
         return
 
     digit = get_digit_for_count()
+    # Convert to strings so that we can have leading / trailing zeros
+    digit_buffer.append(str(digit))
 
     reset_dialling_count()
     counting = False
@@ -62,6 +64,9 @@ def play_dialled_number():
 
     if not digit_buffer:
         return
+
+    combined_digits = "".join(digit_buffer)
+    track = track_map.get(combined_digits, "geography")
 
     # Reset to zero to prevent further incrementing until we start dialling again
     dialling_count = 0
