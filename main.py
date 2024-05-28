@@ -13,7 +13,18 @@ p = None
 counting = False
 on_hook = True
 
-track_names = ["vajra-kisses", "pressure", "cemetery-hill", "green-automobile", "mushroom-haiku", "excerpt-from-i-remember", "poems", "the-sonnets", "how-the-sestina-yawn-works", "geography"]
+track_names = [
+    "vajra-kisses",
+    "pressure",
+    "cemetery-hill",
+    "green-automobile",
+    "mushroom-haiku",
+    "excerpt-from-i-remember",
+    "poems",
+    "the-sonnets",
+    "how-the-sestina-yawn-works",
+    "geography",
+]
 
 
 def start_counting():
@@ -79,8 +90,8 @@ def main():
     global counting
     global p
 
-    stop_dial_trigger = Button(17) # White
-    count_trigger = Button(23) # Blue
+    stop_dial_trigger = Button(17)  # White
+    count_trigger = Button(23)  # Blue
     hook_trigger = Button(26)
 
     # These are kinda backwards. When you lift the phone off the hook the button is pressed.
@@ -104,5 +115,5 @@ def main():
             p.terminate()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
