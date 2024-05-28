@@ -55,7 +55,7 @@ def play_dialled_number(count):
         p.terminate()
 
     parent = Path(__file__).resolve().parent
-    p = subprocess.Popen(["mpg123", f"{parent / "tracks" / track}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{parent / 'tracks' / track}.mp3"])
 
 
 def start_listening():
