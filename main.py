@@ -80,7 +80,7 @@ def main():
 
     stop_dial_trigger = Button(17) # White
     count_trigger = Button(23) # Blue
-    hook_trigger = Button(27)
+    hook_trigger = Button(26)
 
     # These are kinda backwards. When you lift the phone off the hook the button is pressed.
     hook_trigger.when_pressed = start_listening
