@@ -41,6 +41,7 @@ def start_counting():
 
 
 def stop_counting():
+    """ Called when the dialler finishes rotating back to its starting position. """
     global count, counting, on_hook
 
     if on_hook or not counting:
@@ -94,6 +95,7 @@ def start_listening():
 
 
 def stop_listening():
+    """ Called when you replace the phone on the hook. """
     global dialling_count, on_hook, p
 
     on_hook = True
