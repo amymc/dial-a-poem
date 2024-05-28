@@ -9,9 +9,9 @@ from pathlib import Path
 from gpiozero import Button
 
 count = 0
-p = None
 counting = False
 on_hook = True
+p = None
 
 track_map = {
     0: "vajra-kisses",
