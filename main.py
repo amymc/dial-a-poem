@@ -15,20 +15,22 @@ on_hook = True
 p = None
 
 track_map = {
-    "0": "vajra-kisses",
-    "1": "pressure",
-    "2": "cemetery-hill",
-    "3": "green-automobile",
-    "4": "mushroom-haiku",
-    "5": "excerpt-from-i-remember",
-    "6": "poems",
-    "7": "the-sonnets",
-    "8": "how-the-sestina-yawn-works",
-    "9": "geography",
+    "1": "vajra-kisses",
+    "2": "pressure",
+    "3": "cemetery-hill",
+    "4": "green-automobile",
+    "5": "mushroom-haiku",
+    "6": "excerpt-from-i-remember",
+    "7": "poems",
+    "8": "the-sonnets",
+    "9": "how-the-sestina-yawn-works",
+    "0": "geography",
+    "10": "vajra-kisses",
 }
 
 
 def start_counting():
+    """ Called when the dialler starts rotating back to its starting position. """
     global on_hook, counting
 
     if on_hook:
@@ -54,8 +56,13 @@ def stop_counting():
 
 
 def get_digit_for_count():
+    """ Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
     global count
-    index = math.ceil((count - 5) / 21.8) - 1
+    index = math.ceil((count - 5) / 21.8)
+
+    if index == 10:
+        index = 0
+
     return index
 
 
