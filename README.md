@@ -32,3 +32,35 @@ Docs etc.
   https://www.youtube.com/watch?v=JChn7tV_qBk
 - orignal audio recording used </br>
   https://www.youtube.com/watch?v=_21D3TE7YQk
+
+### Parts
+
+#### Rotary dialler
+
+The dialler has 4 pins.
+One white and the green go to ground.
+The other two pins are blue and white—the blue connects to pin 23 and the white to 17.
+
+There is one signal that goes high when you start rotating the dial (start dialling).
+The problem with this is the time taken to move a number to the end of rotation is quit variable -
+you could rotate very slowly or vary quickly.
+
+There is another signal that is always high
+but goes low when you _release_ the dialler after reaching the end of rotation.
+This is better, because the time taken to spin back to the start position is mechanical.
+When you release we call `start_counting` which increments a counter -
+the total count will then correspond to some number dialled.
+
+#### Audio
+
+We are using a MAX98357 audio amplifier to drive the speaker.
+[The guide from adafruit is great!](https://learn.adafruit.com/adafruit-max98357-i2s-class-d-mono-amp).
+To play the actual mp3 files we are using `mpg123`.
+We open/close a subprocess that calls this command with the correct mp3 file.
+
+#### Hook
+
+The hook is a normally open switch.
+When you take the phone off the hook the circuit completes (calls `when_pressed`).
+Until the phone is off the hook we block other processing.
+When the phone is replaced on the hook we terminate any open audio playing.
