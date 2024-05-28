@@ -77,8 +77,13 @@ def play_dialled_number():
 
 
 def start_listening():
-    global on_hook
+    """ Called when you take the phone off the hook. """
+    global digit_buffer, on_hook, p
     on_hook = False
+    digit_buffer = []
+
+    parent = Path(__file__).resolve().parent
+    p = subprocess.Popen(["mpg123", f"{parent / 'tracks' / 'off-hook'}.mp3"])
 
 
 def stop_listening():
