@@ -79,7 +79,7 @@ def stop_listening():
     on_hook = True
     stop_counting(False)
 
-    if p:
+    if p and p.poll() is None:
         p.terminate()
 
 
@@ -105,9 +105,15 @@ def main():
             if counting:
                 count += 1
 
+            if dialling_count > 0:
+                dialling_count += 1
+
+            if dialling_count > 400:
+                play_dialled_number()
+
             time.sleep(0.005)
     except KeyboardInterrupt:
-        if p:
+        if p and p.poll() is None:
             p.terminate()
 
 
