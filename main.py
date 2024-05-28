@@ -28,8 +28,7 @@ track_names = [
 
 
 def start_counting():
-    global on_hook
-    global counting
+    global on_hook, counting
 
     if on_hook:
         return
@@ -38,9 +37,7 @@ def start_counting():
 
 
 def stop_counting(play_audio: bool):
-    global count
-    global counting
-    global on_hook
+    global count, counting, on_hook
 
     if on_hook or not counting:
         return
@@ -75,8 +72,7 @@ def start_listening():
 
 
 def stop_listening():
-    global on_hook
-    global p
+    global on_hook, p
 
     on_hook = True
     stop_counting(False)
@@ -86,9 +82,7 @@ def stop_listening():
 
 
 def main():
-    global count
-    global counting
-    global p
+    global count, counting, p
 
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
