@@ -42,22 +42,27 @@ def stop_counting(play_audio: bool):
     if on_hook or not counting:
         return
 
+    digit = get_digit_for_count()
     if play_audio:
-        play_dialled_number(count)
+        play_dialled_number(digit)
 
     counting = False
     count = 0
 
 
-def play_dialled_number(count):
+def get_digit_for_count():
+    global count
+    index = math.ceil((count - 5) / 21.8) - 1
+    return index
+
+
+def play_dialled_number(digit):
     global p
 
-    index = math.ceil((count - 5) / 21.8) - 1
-
-    try:
-        track = track_names[index]
-    except IndexError:
-        track = track_names[-1]
+    if digit in track_map:
+        track = track_map[digit]
+    else:
+        track = track_map[0]
 
     if p:
         p.terminate()
