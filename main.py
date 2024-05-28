@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-from gpiozero import Button
+import math
+import subprocess
+import time
 from functools import partial
 from pathlib import Path
-import math
-import time
-import subprocess
+
+from gpiozero import Button
 
 count = 0
 p = None
