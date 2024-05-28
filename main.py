@@ -9,6 +9,8 @@ from gpiozero import Button
 
 count = 0
 counting = False
+dialling_count = 0
+digit_buffer = []
 on_hook = True
 p = None
 
@@ -32,6 +34,7 @@ def start_counting():
     if on_hook:
         return
 
+    reset_dialling_count()
     counting = True
 
 
@@ -43,6 +46,7 @@ def stop_counting():
 
     digit = get_digit_for_count()
 
+    reset_dialling_count()
     counting = False
     count = 0
 
@@ -53,16 +57,15 @@ def get_digit_for_count():
     return index
 
 
-def play_dialled_number(digit):
-    global p
+def play_dialled_number():
+    global dialling_count, digit_buffer, p
 
-    if digit in track_map:
-        track = track_map[digit]
-    else:
-        track = track_map[0]
+    if not digit_buffer:
+        return
 
-    if p:
-        p.terminate()
+    # Reset to zero to prevent further incrementing until we start dialling again
+    dialling_count = 0
+    digit_buffer = []
 
     parent = Path(__file__).resolve().parent
     p = subprocess.Popen(["mpg123", f"{parent / 'tracks' / track}.mp3"])
@@ -74,17 +77,28 @@ def start_listening():
 
 
 def stop_listening():
-    global on_hook, p
+    global dialling_count, on_hook, p
 
     on_hook = True
-    stop_counting(False)
+    dialling_count = 0
+    stop_counting()
+
+    if p and p.poll() is None:
+        p.terminate()
+
+
+def reset_dialling_count():
+    global dialling_count, p
+    # Reset to 1, which means we will start continuously counting again.
+    # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
+    dialling_count = 1
 
     if p and p.poll() is None:
         p.terminate()
 
 
 def main():
-    global count, counting, p
+    global count, counting, dialling_count, p
 
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
@@ -95,6 +109,7 @@ def main():
     hook_trigger.when_released = stop_listening
 
     stop_dial_trigger.when_deactivated = stop_counting
+    stop_dial_trigger.when_activated = reset_dialling_count
     count_trigger.when_deactivated = start_counting
 
     try:
