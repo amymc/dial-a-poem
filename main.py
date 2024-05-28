@@ -3,7 +3,6 @@
 import math
 import subprocess
 import time
-from functools import partial
 from pathlib import Path
 
 from gpiozero import Button
@@ -36,15 +35,13 @@ def start_counting():
     counting = True
 
 
-def stop_counting(play_audio: bool):
+def stop_counting():
     global count, counting, on_hook
 
     if on_hook or not counting:
         return
 
     digit = get_digit_for_count()
-    if play_audio:
-        play_dialled_number(digit)
 
     counting = False
     count = 0
@@ -97,7 +94,7 @@ def main():
     hook_trigger.when_pressed = start_listening
     hook_trigger.when_released = stop_listening
 
-    stop_dial_trigger.when_deactivated = partial(stop_counting, True)
+    stop_dial_trigger.when_deactivated = stop_counting
     count_trigger.when_deactivated = start_counting
 
     try:
