@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Dial a Poem</title>
+    {#    <link rel='stylesheet' href='{{url_for('static', filename='styles.css')}}' />#}
+</head>
+<body>
+    {% if form.errors %}
+        {% for field, error in form.errors.items() %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <h1>Upload new track</h1>
+    <form method=post enctype=multipart/form-data>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div>
+            {{ form.number.label }} {{ form.number }}
+        </div>
+        {{ form.file.label }} {{ form.file }}
+        <input type=submit value=Upload>
+    </form>
+
+    <h2>Existing tracks</h2>
+    {% for number, track in tracks.items() %}
+        <div>
+            {{ number }} - {{ track }}
+        </div>
+    {% endfor %}
+    </body>
+</html>
+
