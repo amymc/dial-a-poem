@@ -3,9 +3,9 @@
 import math
 import subprocess
 import time
-from gpiozero import Button
 from pathlib import Path
 
+from gpiozero import Button
 from utils import get_tracks
 
 count = 0
