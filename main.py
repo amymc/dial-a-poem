@@ -31,7 +31,7 @@ TRACK_DIR = Path(__file__).resolve().parent / "tracks"
 
 
 def start_counting():
-    """ Called when the dialler starts rotating back to its starting position. """
+    """Called when the dialler starts rotating back to its starting position."""
     global on_hook, counting
 
     if on_hook:
@@ -42,7 +42,7 @@ def start_counting():
 
 
 def stop_counting():
-    """ Called when the dialler finishes rotating back to its starting position. """
+    """Called when the dialler finishes rotating back to its starting position."""
     global count, counting, on_hook
 
     if on_hook or not counting:
@@ -58,7 +58,7 @@ def stop_counting():
 
 
 def get_digit_for_count():
-    """ Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
+    """Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
     global count
     index = math.ceil((count - 5) / 21.8)
 
@@ -85,7 +85,7 @@ def play_dialled_number():
 
 
 def start_listening():
-    """ Called when you take the phone off the hook. """
+    """Called when you take the phone off the hook."""
     global digit_buffer, on_hook, p
     on_hook = False
     digit_buffer = []
@@ -94,7 +94,7 @@ def start_listening():
 
 
 def stop_listening():
-    """ Called when you replace the phone on the hook. """
+    """Called when you replace the phone on the hook."""
     global dialling_count, on_hook, p
 
     on_hook = True
