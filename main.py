@@ -134,7 +134,7 @@ def main():
                 play_dialled_number()
 
             time.sleep(0.005)
-    except KeyboardInterrupt:
+    finally:
         if p and p.poll() is None:
             p.terminate()
 
