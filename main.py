@@ -3,8 +3,9 @@ import math
 import subprocess
 import time
 from datetime import datetime, timedelta
-from gpiozero import Button
 from pathlib import Path
+
+from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -72,7 +73,7 @@ def play_dialled_number():
     dialling_count = 0
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / track}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / track}"])
 
 
 def start_listening():
