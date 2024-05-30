@@ -67,7 +67,7 @@ def play_dialled_number():
         return
 
     combined_digits = "".join(digit_buffer)
-    track = track_map.get(combined_digits, "geography")
+    track = track_map.get(combined_digits, "geography.mp3")
 
     # Reset to zero to prevent further incrementing until we start dialling again
     dialling_count = 0
