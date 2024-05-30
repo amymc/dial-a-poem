@@ -6,6 +6,8 @@ import time
 from gpiozero import Button
 from pathlib import Path
 
+from utils import get_tracks
+
 count = 0
 counting = False
 dialling_count = 0
@@ -13,20 +15,7 @@ digit_buffer = []
 on_hook = True
 p = None
 
-track_map = {
-    "1": "vajra-kisses",
-    "2": "pressure",
-    "3": "cemetery-hill",
-    "4": "green-automobile",
-    "5": "mushroom-haiku",
-    "6": "excerpt-from-i-remember",
-    "7": "poems",
-    "8": "the-sonnets",
-    "9": "how-the-sestina-yawn-works",
-    "0": "geography",
-    "10": "vajra-kisses",
-}
-
+track_map = get_tracks()
 TRACK_DIR = Path(__file__).resolve().parent / "tracks"
 
 
