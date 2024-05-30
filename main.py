@@ -3,9 +3,8 @@
 import math
 import subprocess
 import time
-from pathlib import Path
-
 from gpiozero import Button
+from pathlib import Path
 
 count = 0
 counting = False
