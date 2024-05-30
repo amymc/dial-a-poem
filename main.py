@@ -27,6 +27,8 @@ track_map = {
     "10": "vajra-kisses",
 }
 
+TRACK_DIR = Path(__file__).resolve().parent / "tracks"
+
 
 def start_counting():
     """ Called when the dialler starts rotating back to its starting position. """
@@ -79,8 +81,7 @@ def play_dialled_number():
     dialling_count = 0
     digit_buffer = []
 
-    parent = Path(__file__).resolve().parent
-    p = subprocess.Popen(["mpg123", f"{parent / 'tracks' / track}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / track}.mp3"])
 
 
 def start_listening():
@@ -89,8 +90,7 @@ def start_listening():
     on_hook = False
     digit_buffer = []
 
-    parent = Path(__file__).resolve().parent
-    p = subprocess.Popen(["mpg123", f"{parent / 'tracks' / 'off-hook'}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / 'off-hook'}.mp3"])
 
 
 def stop_listening():
