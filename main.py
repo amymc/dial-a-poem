@@ -6,6 +6,9 @@ import time
 from pathlib import Path
 
 from gpiozero import Button
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
+
 from utils import get_tracks
 
 count = 0
@@ -119,6 +122,11 @@ def main():
     stop_dial_trigger.when_activated = reset_dialling_count
     count_trigger.when_deactivated = start_counting
 
+    observer = Observer()
+    event_handler = FileChangedHandler()
+    observer.schedule(event_handler, str(TRACK_DIR), recursive=False)
+    observer.start()
+
     try:
         while True:
             if on_hook:
@@ -137,6 +145,19 @@ def main():
     finally:
         if p and p.poll() is None:
             p.terminate()
+
+        observer.stop()
+        observer.join()
+
+
+class FileChangedHandler(FileSystemEventHandler):
+    def on_modified(self, event: FileSystemEvent) -> None:
+        # Only take action when the track-list is modified, not when new tracks are saved to the directory
+        if event.is_directory:
+            return
+
+        global track_map
+        track_map = get_tracks()
 
 
 if __name__ == "__main__":
