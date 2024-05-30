@@ -21,7 +21,8 @@ def index():
     if form.validate_on_submit():
         file = form.file.data
         number = form.number.data
-        number = number.replace("-", "")  # Strip any numeric separators
+        # Remove symbols
+        number = number.replace("-", "").replace("+", "").replace("(", "").replace(")", "")
         write_to_file(file, number)
 
         # Add the newest track without re-reading file

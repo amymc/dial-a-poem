@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Length, ValidationError
 
 from utils import get_tracks
 
-phone_regex = re.compile("[0-9-]*")
+phone_regex = re.compile("[0-9-+()]*")
 
 
 def is_numeric_phone_number(_form, field):
