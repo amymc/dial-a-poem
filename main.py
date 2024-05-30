@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-
 import math
 import subprocess
 import time
-from pathlib import Path
-
+from datetime import datetime, timedelta
 from gpiozero import Button
+from pathlib import Path
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -151,10 +150,18 @@ def main():
 
 
 class FileChangedHandler(FileSystemEventHandler):
+    def __init__(self):
+        self.last_modified = datetime.now()
+
     def on_modified(self, event: FileSystemEvent) -> None:
         # Only take action when the track-list is modified, not when new tracks are saved to the directory
         if event.is_directory:
             return
+
+        if datetime.now() - self.last_modified < timedelta(seconds=1):
+            return
+        else:
+            self.last_modified = datetime.now()
 
         global track_map
         track_map = get_tracks()
