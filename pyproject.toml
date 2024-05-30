@@ -2,10 +2,15 @@
 name = 'dial-a-poem'
 version = '1.0.0'
 dependencies = [
-    'black==24.4.2',
     'gpiozero==2.0.1',
     'Flask==3.0.3',
     'Flask-WTF==1.2.1'
+]
+requires-python = '>=3.8'
+
+[project.optional-dependencies]
+dev = [
+    'black==24.4.2',
 ]
 
 [tool.black]
