@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import math
+import random
 import subprocess
 import time
 from datetime import datetime, timedelta
-from pathlib import Path
-
 from gpiozero import Button
+from pathlib import Path
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -67,7 +67,7 @@ def play_dialled_number():
         return
 
     combined_digits = "".join(digit_buffer)
-    track = track_map.get(combined_digits, "geography.mp3")
+    track = track_map.get(combined_digits, random.choice(list(track_map.values())))
 
     # Reset to zero to prevent further incrementing until we start dialling again
     dialling_count = 0
