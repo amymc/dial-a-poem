@@ -12,8 +12,10 @@
 </head>
 <body>
     {% if form.errors %}
-        {% for field, error in form.errors.items() %}
-            <p>{{ error }}</p>
+        {% for field, errors in form.errors.items() %}
+            {% for error in errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
         {% endfor %}
     {% endif %}
 
