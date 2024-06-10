@@ -162,8 +162,10 @@ class FileChangedHandler(FileSystemEventHandler):
 
         if datetime.now() - self.last_modified < timedelta(seconds=1):
             return
-        else:
-            self.last_modified = datetime.now()
+
+        # Allow some time for the file to be written to disk
+        time.sleep(1)
+        self.last_modified = datetime.now()
 
         global track_map
         track_map = get_tracks()
