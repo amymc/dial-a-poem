@@ -1,6 +1,6 @@
 import os
 
-from flask import flash, Flask, render_template
+from flask import flash, Flask, redirect, render_template, url_for
 from flask_wtf import CSRFProtect
 
 from form import Form
@@ -28,5 +28,6 @@ def index():
         # Add the newest track without re-reading file
         tracks[number] = file.filename
         flash("Successfully uploaded!")
+        return redirect(url_for("index"))
 
     return render_template("index.html", tracks=tracks, form=form)
