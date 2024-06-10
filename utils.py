@@ -9,6 +9,7 @@ CSV_FILE = UPLOAD_FOLDER / "track-list.csv"
 
 
 def get_tracks():
+    """Reads the CSV track file and returns a dictionary of tracks with keys as the dial number."""
     tracks = {}
 
     with open(CSV_FILE, "r", encoding="UTF-8") as file:
