@@ -130,9 +130,6 @@ def main():
 
     try:
         while True:
-            if on_hook:
-                continue
-
             if counting:
                 count += 1
 
