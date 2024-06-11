@@ -4,12 +4,12 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 
 parent = Path(__file__).resolve().parent
-UPLOAD_FOLDER = parent / "tracks"
+UPLOAD_FOLDER = parent / "audio" / "poems"
 CSV_FILE = UPLOAD_FOLDER / "track-list.csv"
 
 
 def get_tracks():
-    """Reads the CSV track file and returns a dictionary of tracks with keys as the dial number."""
+    """Reads the CSV track file and returns a dictionary of audio with keys as the dial number."""
     tracks = {}
 
     with open(CSV_FILE, "r", encoding="UTF-8") as file:

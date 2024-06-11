@@ -21,7 +21,7 @@ on_hook_count = 0
 p = None
 
 track_map = get_tracks()
-TRACK_DIR = Path(__file__).resolve().parent / "tracks"
+AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 
 
 def start_counting():
@@ -75,7 +75,7 @@ def play_dialled_number():
     dialling_count = 0
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / track}"])
+    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / 'poems' / track}"])
 
 
 def start_listening():
@@ -84,7 +84,7 @@ def start_listening():
     on_hook = False
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", f"{TRACK_DIR / 'off-hook'}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / 'off-hook'}.mp3"])
 
 
 def stop_listening():
@@ -135,7 +135,7 @@ def main():
 
     observer = Observer()
     event_handler = FileChangedHandler()
-    observer.schedule(event_handler, str(TRACK_DIR), recursive=False)
+    observer.schedule(event_handler, str(AUDIO_DIR), recursive=False)
     observer.start()
 
     try:
@@ -166,7 +166,7 @@ class FileChangedHandler(FileSystemEventHandler):
         self.last_modified = datetime.now()
 
     def on_modified(self, event: FileSystemEvent) -> None:
-        # Only take action when the track-list is modified, not when new tracks are saved to the directory
+        # Only take action when the track-list is modified, not when new audio is saved to the directory
         if event.is_directory:
             return
 
