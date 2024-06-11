@@ -17,6 +17,7 @@ counting = False
 dialling_count = 0
 digit_buffer = []
 on_hook = True
+on_hook_count = 0
 p = None
 
 track_map = get_tracks()
@@ -88,11 +89,20 @@ def start_listening():
 
 def stop_listening():
     """Called when you replace the phone on the hook."""
-    global dialling_count, on_hook, p
+    global dialling_count, on_hook, on_hook_count, p
 
     on_hook = True
     dialling_count = 0
     stop_counting()
+
+    if on_hook_count == 0:
+        # Allow count to start incrementing in main loop
+        on_hook_count = 1
+    elif 30 < on_hook_count < 100:
+        # TODO: toggle dial a state!
+        on_hook_count = 0
+    elif on_hook_count >= 100:
+        on_hook_count = 0
 
     if p and p.poll() is None:
         p.terminate()
@@ -109,7 +119,7 @@ def reset_dialling_count():
 
 
 def main():
-    global count, counting, dialling_count, p
+    global count, counting, dialling_count, on_hook_count, p
 
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
@@ -138,6 +148,9 @@ def main():
 
             if dialling_count > 400:
                 play_dialled_number()
+
+            if on_hook_count > 0:
+                on_hook_count += 1
 
             time.sleep(0.005)
     finally:
