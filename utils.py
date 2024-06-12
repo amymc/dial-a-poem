@@ -11,8 +11,8 @@ UPLOAD_FOLDER = AUDIO_DIR / "poems"
 
 
 def get_tracks():
-    """Reads the CSV into a dictionary with keys for the audio modes. Each value is another dictionary of dial number
-    -> filename."""
+    """Reads the CSV into a dictionary with keys for the audio modes.
+    Each value is another dictionary of dial number -> filename."""
     tracks = {}
 
     with open(CSV_FILE, "r", encoding="UTF-8") as file:
