@@ -135,27 +135,6 @@ def handle_hook_double_tap():
         audio_mode = toggle_audio_mode(audio_mode)
 
 
-def main():
-    stop_dial_trigger = Button(17)  # White
-    count_trigger = Button(23)  # Blue
-    hook_trigger = Button(26)
-
-    # These are kinda backwards. When you lift the phone off the hook the button is pressed.
-    hook_trigger.when_pressed = start_listening
-    hook_trigger.when_released = stop_listening
-
-    stop_dial_trigger.when_deactivated = stop_counting
-    stop_dial_trigger.when_activated = reset_dialling_count
-    count_trigger.when_deactivated = start_counting
-
-    observer = Observer()
-    event_handler = FileChangedHandler()
-    observer.schedule(event_handler, str(AUDIO_DIR), recursive=False)
-    observer.start()
-
-    run_main_loop(observer)
-
-
 def run_main_loop(observer):
     global count, counting, dialling_count, on_hook_count, p
 
@@ -183,6 +162,27 @@ def run_main_loop(observer):
 
         observer.stop()
         observer.join()
+
+
+def main():
+    stop_dial_trigger = Button(17)  # White
+    count_trigger = Button(23)  # Blue
+    hook_trigger = Button(26)
+
+    # These are kinda backwards. When you lift the phone off the hook the button is pressed.
+    hook_trigger.when_pressed = start_listening
+    hook_trigger.when_released = stop_listening
+
+    stop_dial_trigger.when_deactivated = stop_counting
+    stop_dial_trigger.when_activated = reset_dialling_count
+    count_trigger.when_deactivated = start_counting
+
+    observer = Observer()
+    event_handler = FileChangedHandler()
+    observer.schedule(event_handler, str(AUDIO_DIR), recursive=False)
+    observer.start()
+
+    run_main_loop(observer)
 
 
 class FileChangedHandler(FileSystemEventHandler):
