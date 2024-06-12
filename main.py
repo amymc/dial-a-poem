@@ -9,6 +9,7 @@ from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
+from audio_mode import AudioMode, toggle_audio_mode
 from utils import AUDIO_DIR, get_tracks
 
 count = 0
@@ -18,6 +19,7 @@ digit_buffer = []
 on_hook = True
 on_hook_count = 0
 p = None
+audio_mode = AudioMode.POEMS
 
 track_map = get_tracks()
 
