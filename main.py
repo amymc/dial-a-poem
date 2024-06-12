@@ -75,16 +75,16 @@ def play_dialled_number():
     dialling_count = 0
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / 'poems' / track}"])
+    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / audio_mode / track}"])
 
 
 def start_listening():
     """Called when you take the phone off the hook."""
-    global digit_buffer, on_hook, p
+    global audio_mode, digit_buffer, on_hook, p
     on_hook = False
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / 'off-hook'}.mp3"])
+    p = subprocess.Popen(["mpg123", f"{AUDIO_DIR / audio_mode / 'off-hook'}.mp3"])
 
 
 def stop_listening():
