@@ -51,6 +51,16 @@ def stop_counting():
     count = 0
 
 
+def reset_dialling_count():
+    global dialling_count, p
+    # Reset to 1, which means we will start continuously counting again.
+    # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
+    dialling_count = 1
+
+    if p and p.poll() is None:
+        p.terminate()
+
+
 def get_digit_for_count():
     """Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
     global count
@@ -112,16 +122,6 @@ def handle_hook_double_tap():
         # 'Double-tapped' phone back on hook
         on_hook_count = 0
         audio_mode = toggle_audio_mode(audio_mode)
-
-
-def reset_dialling_count():
-    global dialling_count, p
-    # Reset to 1, which means we will start continuously counting again.
-    # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
-    dialling_count = 1
-
-    if p and p.poll() is None:
-        p.terminate()
 
 
 def main():
