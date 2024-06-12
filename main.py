@@ -112,9 +112,6 @@ def handle_hook_double_tap():
         # 'Double-tapped' phone back on hook
         on_hook_count = 0
         audio_mode = toggle_audio_mode(audio_mode)
-    elif on_hook_count >= 100:
-        # Replaced hook after a long time
-        on_hook_count = 0
 
 
 def reset_dialling_count():
@@ -164,6 +161,9 @@ def run_main_loop(observer):
 
             if on_hook_count > 0:
                 on_hook_count += 1
+            elif on_hook_count > 100:
+                # We have not replaced the hook for a while, stop counting
+                on_hook_count = 0
 
             time.sleep(0.005)
     finally:
