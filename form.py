@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField, StringField
 from wtforms.validators import DataRequired, Length, ValidationError
 
+from audio_mode import AudioMode
 from utils import get_tracks
 
 phone_regex = re.compile("[0-9-+()]*")
@@ -17,7 +18,7 @@ def is_numeric_phone_number(_form, field):
 
 def is_not_already_existing(_form, field):
     tracks = get_tracks()
-    if field.data in tracks:
+    if field.data in tracks[AudioMode.POEMS]:
         raise ValidationError("Number is already assigned.")
 
 

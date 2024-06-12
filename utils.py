@@ -3,6 +3,8 @@ from pathlib import Path
 
 from werkzeug.utils import secure_filename
 
+from audio_mode import AudioMode
+
 parent = Path(__file__).resolve().parent
 AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 UPLOAD_FOLDER = AUDIO_DIR / "poems"
@@ -23,8 +25,8 @@ def get_tracks():
     return tracks
 
 
-def write_to_file(file, number: str):
+def write_to_file(audio_mode: AudioMode, file, number: str):
     filename = secure_filename(file.filename)
     file.save(os.path.join(UPLOAD_FOLDER, filename))
     with open(CSV_FILE, "a", encoding="UTF-8") as file:
-        file.write(f"{number}, {filename}\n")
+        file.write(f"{audio_mode}, {number}, {filename}\n")
