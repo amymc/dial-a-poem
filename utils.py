@@ -19,8 +19,9 @@ def get_tracks():
         for line in file:
             if not line.strip():
                 continue
-            number, filename = line.strip().split(",")
-            tracks[number] = filename.strip()
+            audio_mode, number, filename = line.strip().split(",")
+            audio_mode = AudioMode(audio_mode)
+            tracks[audio_mode][number] = filename.strip()
 
     return tracks
 
