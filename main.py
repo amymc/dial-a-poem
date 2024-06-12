@@ -12,15 +12,26 @@ from watchdog.observers import Observer
 from audio_mode import AudioMode, toggle_audio_mode
 from utils import AUDIO_DIR, get_tracks
 
+# Used to determine the number dialled. Once the rotary dial is released, this starts incrementing until the dial
+# stops rotating. We map from this count to the digit in `get_digit_for_count`.
 count = 0
 counting = False
+
+# Used to check the delay between dialling digits.  Each time we dial a new digit, we reset this count.
+# If the delay is long enough (e.g. it has been a while since we last dialled a digit) we combine all
+# dialled digits into a single number.
 dialling_count = 0
 digit_buffer = []
-on_hook = True
-on_hook_count = 0
-p = None
-audio_mode = AudioMode.POEMS
 
+on_hook = True
+
+# Used to determine if we replaced the hook twice in quick succession (i.e. 'double-tapped' the hook).
+# If so, we change the audio mode.
+on_hook_count = 0
+
+p = None  # The process that handles playing the mp3
+
+audio_mode = AudioMode.POEMS
 track_map = get_tracks()
 
 
