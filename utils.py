@@ -6,21 +6,27 @@ from werkzeug.utils import secure_filename
 from audio_mode import AudioMode
 
 AUDIO_DIR = Path(__file__).resolve().parent / "audio"
+CSV_FILE = AUDIO_DIR / "track-list.csv"
 UPLOAD_FOLDER = AUDIO_DIR / "poems"
-CSV_FILE = UPLOAD_FOLDER / "track-list.csv"
 
 
 def get_tracks():
-    """Reads the CSV track file and returns a dictionary of audio with keys as the dial number."""
+    """Reads the CSV into a dictionary with keys for the audio modes. Each value is another dictionary of dial number
+    -> filename."""
     tracks = {}
 
     with open(CSV_FILE, "r", encoding="UTF-8") as file:
         for line in file:
             if not line.strip():
                 continue
-            audio_mode, number, filename = line.strip().split(",")
+
+            audio_mode, number, filename = [piece.strip() for piece in line.strip().split(",")]
             audio_mode = AudioMode(audio_mode)
-            tracks[audio_mode][number] = filename.strip()
+
+            if audio_mode.value not in tracks:
+                tracks[audio_mode.value] = {}
+
+            tracks[audio_mode.value][number] = filename.strip()
 
     return tracks
 
