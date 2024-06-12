@@ -75,12 +75,12 @@ def reset_dialling_count():
 def get_digit_for_count():
     """Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
     global count
-    index = math.ceil((count - 5) / 21.8)
+    digit = math.ceil((count - 5) / 21.8)
 
-    if index == 10:
-        index = 0
+    if digit == 10:
+        digit = 0
 
-    return index
+    return digit
 
 
 def play_dialled_number():
