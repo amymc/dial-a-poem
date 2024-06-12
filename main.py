@@ -89,23 +89,31 @@ def start_listening():
 
 def stop_listening():
     """Called when you replace the phone on the hook."""
-    global dialling_count, on_hook, on_hook_count, p
+    global dialling_count, on_hook, p
 
     on_hook = True
     dialling_count = 0
     stop_counting()
-
-    if on_hook_count == 0:
-        # Allow count to start incrementing in main loop
-        on_hook_count = 1
-    elif 30 < on_hook_count < 100:
-        # TODO: toggle dial a state!
-        on_hook_count = 0
-    elif on_hook_count >= 100:
-        on_hook_count = 0
+    handle_hook_double_tap()
 
     if p and p.poll() is None:
         p.terminate()
+
+
+def handle_hook_double_tap():
+    """Checks if the hook has been replaced twice in rapid succession. If so, toggle between poem and joke modes."""
+    global audio_mode, on_hook_count
+
+    if on_hook_count == 0:
+        # Hook just replaced, allow incrementing count in main loop
+        on_hook_count = 1
+    elif 30 < on_hook_count < 100:
+        # 'Double-tapped' phone back on hook
+        on_hook_count = 0
+        audio_mode = toggle_audio_mode(audio_mode)
+    elif on_hook_count >= 100:
+        # Replaced hook after a long time
+        on_hook_count = 0
 
 
 def reset_dialling_count():
