@@ -5,7 +5,6 @@ from werkzeug.utils import secure_filename
 
 from audio_mode import AudioMode
 
-parent = Path(__file__).resolve().parent
 AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 UPLOAD_FOLDER = AUDIO_DIR / "poems"
 CSV_FILE = UPLOAD_FOLDER / "track-list.csv"
