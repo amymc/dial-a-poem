@@ -4,7 +4,8 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 
 parent = Path(__file__).resolve().parent
-UPLOAD_FOLDER = parent / "audio" / "poems"
+AUDIO_DIR = Path(__file__).resolve().parent / "audio"
+UPLOAD_FOLDER = AUDIO_DIR / "poems"
 CSV_FILE = UPLOAD_FOLDER / "track-list.csv"
 
 

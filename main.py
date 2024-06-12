@@ -4,13 +4,12 @@ import random
 import subprocess
 import time
 from datetime import datetime, timedelta
-from pathlib import Path
 
 from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from utils import get_tracks
+from utils import AUDIO_DIR, get_tracks
 
 count = 0
 counting = False
@@ -21,7 +20,6 @@ on_hook_count = 0
 p = None
 
 track_map = get_tracks()
-AUDIO_DIR = Path(__file__).resolve().parent / "audio"
 
 
 def start_counting():
