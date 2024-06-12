@@ -63,13 +63,14 @@ def get_digit_for_count():
 
 
 def play_dialled_number():
-    global dialling_count, digit_buffer, p
+    global audio_mode, dialling_count, digit_buffer, p
 
     if not digit_buffer:
         return
 
     combined_digits = "".join(digit_buffer)
-    track = track_map.get(combined_digits, random.choice(list(track_map.values())))
+    tracks_for_audio_mode = track_map.get(audio_mode, AudioMode.POEMS)
+    track = tracks_for_audio_mode.get(combined_digits, random.choice(list(tracks_for_audio_mode.values())))
 
     # Reset to zero to prevent further incrementing until we start dialling again
     dialling_count = 0
