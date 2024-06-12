@@ -84,7 +84,7 @@ def get_digit_for_count():
 
 
 def play_dialled_number():
-    global audio_mode, dialling_count, digit_buffer, p
+    global audio_mode, digit_buffer, p
 
     if not digit_buffer:
         return
@@ -93,8 +93,6 @@ def play_dialled_number():
     tracks_for_audio_mode = track_map.get(audio_mode, AudioMode.POEMS)
     track = tracks_for_audio_mode.get(combined_digits, random.choice(list(tracks_for_audio_mode.values())))
 
-    # Reset to zero to prevent further incrementing until we start dialling again
-    dialling_count = 0
     digit_buffer = []
 
     p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
@@ -147,6 +145,7 @@ def run_main_loop(observer):
                 dialling_count += 1
 
             if dialling_count > 400:
+                dialling_count = 0
                 play_dialled_number()
 
             if on_hook_count > 0:
