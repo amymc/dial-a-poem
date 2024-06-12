@@ -150,7 +150,8 @@ def run_main_loop(observer):
 
             if on_hook_count > 0:
                 on_hook_count += 1
-            elif on_hook_count > 100:
+
+            if on_hook_count > 100:
                 # We have not replaced the hook for a while, stop counting
                 on_hook_count = 0
 
