@@ -1,5 +1,3 @@
-import os
-
 from flask import flash, Flask, redirect, render_template, url_for
 from flask_wtf import CSRFProtect
 
@@ -8,7 +6,7 @@ from form import Form
 from utils import get_tracks, write_to_file
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY")
+app.config.from_pyfile("config.cfg")
 
 csrf = CSRFProtect(app)
 
