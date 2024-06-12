@@ -128,8 +128,6 @@ def reset_dialling_count():
 
 
 def main():
-    global count, counting, dialling_count, on_hook_count, p
-
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
     hook_trigger = Button(26)
@@ -146,6 +144,12 @@ def main():
     event_handler = FileChangedHandler()
     observer.schedule(event_handler, str(AUDIO_DIR), recursive=False)
     observer.start()
+
+    run_main_loop(observer)
+
+
+def run_main_loop(observer):
+    global count, counting, dialling_count, on_hook_count, p
 
     try:
         while True:
