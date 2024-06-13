@@ -85,6 +85,7 @@ def play_dialled_number():
 
     if combined_digits == str(TOGGLE_MODE_DIALLING_NUMBER):
         audio_mode = toggle_audio_mode(audio_mode)
+        p = subprocess.Popen(["mpg123", AUDIO_DIR / "switch.mp3"])
         return
 
     tracks_for_audio_mode = track_map.get(audio_mode, AudioMode.POEMS)
