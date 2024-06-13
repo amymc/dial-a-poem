@@ -30,7 +30,6 @@
     {% endwith %}
 
     <h1>Upload new track</h1>
-    <h2>Until someone can help me figure out a strange bug please make sure the phone is off the hook when you upload.</h2>
 
     <form method=post enctype=multipart/form-data>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -41,6 +40,7 @@
         <input type=submit value=Upload>
     </form>
 
+    <h2>'11' is reserved for changing modes</h2>
     <h2>Existing tracks</h2>
     {% for number, track in tracks.items() %}
         <div>

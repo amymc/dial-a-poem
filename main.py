@@ -9,7 +9,7 @@ from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from audio_mode import AudioMode, toggle_audio_mode
+from audio_mode import AudioMode, toggle_audio_mode, TOGGLE_MODE_DIALLING_NUMBER
 from utils import AUDIO_DIR, get_tracks
 
 # Used to determine the number dialled. Once the rotary dial is released, this starts incrementing until the dial
@@ -23,12 +23,6 @@ counting = False
 dialling_count = 0
 digit_buffer = []
 
-on_hook = True
-
-# Used to determine if we replaced the hook twice in quick succession (i.e. 'double-tapped' the hook).
-# If so, we change the audio mode.
-on_hook_count = 0
-
 p = None  # The process that handles playing the mp3
 
 audio_mode = AudioMode.POEMS
@@ -37,10 +31,7 @@ track_map = get_tracks()
 
 def start_counting():
     """Called when the dialler starts rotating back to its starting position."""
-    global on_hook, counting
-
-    if on_hook:
-        return
+    global counting
 
     reset_dialling_count()
     counting = True
@@ -48,9 +39,9 @@ def start_counting():
 
 def stop_counting():
     """Called when the dialler finishes rotating back to its starting position."""
-    global count, counting, on_hook
+    global count, counting
 
-    if on_hook or not counting:
+    if not counting:
         return
 
     digit = get_digit_for_count()
@@ -90,51 +81,20 @@ def play_dialled_number():
         return
 
     combined_digits = "".join(digit_buffer)
+    digit_buffer = []
+
+    if combined_digits == str(TOGGLE_MODE_DIALLING_NUMBER):
+        audio_mode = toggle_audio_mode(audio_mode)
+        return
+
     tracks_for_audio_mode = track_map.get(audio_mode, AudioMode.POEMS)
     track = tracks_for_audio_mode.get(combined_digits, random.choice(list(tracks_for_audio_mode.values())))
-
-    digit_buffer = []
 
     p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
 
 
-def start_listening():
-    """Called when you take the phone off the hook."""
-    global audio_mode, digit_buffer, on_hook, p
-    on_hook = False
-    digit_buffer = []
-
-    p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
-
-
-def stop_listening():
-    """Called when you replace the phone on the hook."""
-    global dialling_count, on_hook, p
-
-    on_hook = True
-    dialling_count = 0
-    stop_counting()
-    handle_hook_double_tap()
-
-    if p and p.poll() is None:
-        p.terminate()
-
-
-def handle_hook_double_tap():
-    """Checks if the hook has been replaced twice in rapid succession. If so, toggle between poem and joke modes."""
-    global audio_mode, on_hook_count
-
-    if on_hook_count == 0:
-        # Hook just replaced, allow incrementing count in main loop
-        on_hook_count = 1
-    elif 30 < on_hook_count < 100:
-        # 'Double-tapped' phone back on hook
-        on_hook_count = 0
-        audio_mode = toggle_audio_mode(audio_mode)
-
-
 def run_main_loop(observer):
-    global count, counting, dialling_count, on_hook_count, p
+    global count, counting, dialling_count, p
 
     try:
         while True:
@@ -148,13 +108,6 @@ def run_main_loop(observer):
                 dialling_count = 0
                 play_dialled_number()
 
-            if on_hook_count > 0:
-                on_hook_count += 1
-
-            if on_hook_count > 100:
-                # We have not replaced the hook for a while, stop counting
-                on_hook_count = 0
-
             time.sleep(0.005)
     finally:
         if p and p.poll() is None:
@@ -167,11 +120,6 @@ def run_main_loop(observer):
 def main():
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
-    hook_trigger = Button(26)
-
-    # These are kinda backwards. When you lift the phone off the hook the button is pressed.
-    hook_trigger.when_pressed = start_listening
-    hook_trigger.when_released = stop_listening
 
     stop_dial_trigger.when_deactivated = stop_counting
     stop_dial_trigger.when_activated = reset_dialling_count

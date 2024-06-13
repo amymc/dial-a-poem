@@ -1,6 +1,9 @@
 from enum import StrEnum
 
 
+TOGGLE_MODE_DIALLING_NUMBER = 11
+
+
 class AudioMode(StrEnum):
     POEMS = "poems"
     JOKES = "jokes"
