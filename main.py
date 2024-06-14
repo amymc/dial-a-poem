@@ -105,8 +105,6 @@ def start_listening():
     on_hook = False
     digit_buffer = []
 
-    print("start listening\n")
-
     p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
 
 
