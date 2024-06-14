@@ -138,7 +138,7 @@ def handle_hook_double_tap():
 def run_main_loop(observer):
     global count, counting, dialling_count, on_hook_count, p
 
-    hook_trigger = Button(26, bounce_time=0.1)
+    hook_trigger = Button(26)
 
     lifted_hook = False
     time_since_lifted_off = 0
