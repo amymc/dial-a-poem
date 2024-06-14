@@ -140,16 +140,17 @@ def run_main_loop(observer):
 
     hook_trigger = Button(26)
 
+    # Used to manually detect lifting/hanging up the phone.
+    # This is necessary because there is some sort of weird lock that happens when hanging up with a background
+    # subprocess.
+    # With the built-in event detection, the hang-up is not detected and the CPU usage goes to 100%
+    # (while there is an active background mp3 subprocess).
     lifted_hook = False
     time_since_lifted_off = 0
     time_since_hung_up = 0
 
     try:
         while True:
-            # Manual event detection for lifting/hanging up the phone This is necessary because there is some sort of
-            # weird lock that happens when hanging up with a background subprocess.
-            # With the built-in event detection, the hang-up is not detected and the CPU usage goes to 100%
-            # (only while there is an active background mp3 subprocess).
             if not lifted_hook and hook_trigger.is_pressed:
                 time_since_hung_up = 0
                 time_since_lifted_off += 1
