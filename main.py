@@ -157,11 +157,11 @@ def run_main_loop(observer):
                 time_since_lifted_off = 0
                 time_since_hung_up += 1
 
-            if not lifted_hook and time_since_lifted_off > 100:
+            if not lifted_hook and time_since_lifted_off > 30:
                 start_listening()
                 lifted_hook = True
 
-            if lifted_hook and time_since_hung_up > 100:
+            if lifted_hook and time_since_hung_up > 30:
                 stop_listening()
                 lifted_hook = False
 
