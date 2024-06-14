@@ -68,8 +68,7 @@ def reset_dialling_count():
     # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
     dialling_count = 1
 
-    if p and p.poll() is None:
-        p.terminate()
+    terminate_running_subprocess()
 
 
 def get_digit_for_count():
@@ -157,11 +156,17 @@ def run_main_loop(observer):
 
             time.sleep(0.005)
     finally:
-        if p and p.poll() is None:
-            p.terminate()
+        terminate_running_subprocess()
 
         observer.stop()
         observer.join()
+
+
+def terminate_running_subprocess():
+    global p
+
+    if p and p.poll() is None:
+        p.terminate()
 
 
 def main():
