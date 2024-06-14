@@ -115,10 +115,9 @@ def stop_listening():
     dialling_count = 0
     counting = False
     count = 0
+    reset_dialling_count()
     handle_hook_double_tap()
 
-    if p and p.poll() is None:
-        p.terminate()
 
 
 def handle_hook_double_tap():
