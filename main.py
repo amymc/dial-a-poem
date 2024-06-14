@@ -103,6 +103,8 @@ def start_listening():
     on_hook = False
     digit_buffer = []
 
+    print("start listening\n")
+
     p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
 
 
@@ -126,7 +128,7 @@ def handle_hook_double_tap():
     if on_hook_count == 0:
         # Hook just replaced, allow incrementing count in main loop
         on_hook_count = 1
-    elif 30 < on_hook_count < 100:
+    elif 30 < on_hook_count < 200:
         # 'Double-tapped' phone back on hook
         on_hook_count = 0
         audio_mode = toggle_audio_mode(audio_mode)
@@ -175,7 +177,7 @@ def run_main_loop(observer):
             if on_hook_count > 0:
                 on_hook_count += 1
 
-            if on_hook_count > 100:
+            if on_hook_count > 200:
                 # We have not replaced the hook for a while, stop counting
                 on_hook_count = 0
 
