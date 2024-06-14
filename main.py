@@ -48,9 +48,9 @@ def start_counting():
 
 def stop_counting():
     """Called when the dialler finishes rotating back to its starting position."""
-    global count, counting, on_hook
+    global count, counting
 
-    if on_hook or not counting:
+    if not counting:
         return
 
     digit = get_digit_for_count()
@@ -109,11 +109,12 @@ def start_listening():
 
 def stop_listening():
     """Called when you replace the phone on the hook."""
-    global dialling_count, on_hook, p
+    global counting, count, dialling_count, on_hook, p
 
     on_hook = True
     dialling_count = 0
-    stop_counting()
+    counting = False
+    count = 0
     handle_hook_double_tap()
 
     if p and p.poll() is None:
