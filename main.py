@@ -135,8 +135,33 @@ def handle_hook_double_tap():
 def run_main_loop(observer):
     global count, counting, dialling_count, on_hook_count, p
 
+    hook_trigger = Button(26, bounce_time=0.1)
+
+    lifted_hook = False
+    time_since_lifted_off = 0
+    time_since_hung_up = 0
+
     try:
         while True:
+            # Manual event detection for lifting/hanging up the phone This is necessary because there is some sort of
+            # weird lock that happens when hanging up with a background subprocess.
+            # With the built-in event detection, the hang-up is not detected and the CPU usage goes to 100%
+            # (only while there is an active background mp3 subprocess).
+            if not lifted_hook and hook_trigger.is_pressed:
+                time_since_hung_up = 0
+                time_since_lifted_off += 1
+            elif lifted_hook and not hook_trigger.is_pressed:
+                time_since_lifted_off = 0
+                time_since_hung_up += 1
+
+            if not lifted_hook and time_since_lifted_off > 100:
+                start_listening()
+                lifted_hook = True
+
+            if lifted_hook and time_since_hung_up > 100:
+                stop_listening()
+                lifted_hook = False
+
             if counting:
                 count += 1
 
@@ -172,11 +197,6 @@ def terminate_running_subprocess():
 def main():
     stop_dial_trigger = Button(17)  # White
     count_trigger = Button(23)  # Blue
-    hook_trigger = Button(26)
-
-    # These are kinda backwards. When you lift the phone off the hook the button is pressed.
-    hook_trigger.when_pressed = start_listening
-    hook_trigger.when_released = stop_listening
 
     stop_dial_trigger.when_deactivated = stop_counting
     stop_dial_trigger.when_activated = reset_dialling_count
