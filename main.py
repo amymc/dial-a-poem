@@ -34,6 +34,8 @@ p = None  # The process that handles playing the mp3
 audio_mode = AudioMode.POEMS
 track_map = get_tracks()
 
+DOUBLE_TAP_TIMEOUT = 200
+
 
 def start_counting():
     """Called when the dialler starts rotating back to its starting position."""
@@ -120,7 +122,6 @@ def stop_listening():
     handle_hook_double_tap()
 
 
-
 def handle_hook_double_tap():
     """Checks if the hook has been replaced twice in rapid succession. If so, toggle between poem and joke modes."""
     global audio_mode, on_hook_count
@@ -128,7 +129,7 @@ def handle_hook_double_tap():
     if on_hook_count == 0:
         # Hook just replaced, allow incrementing count in main loop
         on_hook_count = 1
-    elif 30 < on_hook_count < 200:
+    elif 30 < on_hook_count < DOUBLE_TAP_TIMEOUT:
         # 'Double-tapped' phone back on hook
         on_hook_count = 0
         audio_mode = toggle_audio_mode(audio_mode)
@@ -174,10 +175,11 @@ def run_main_loop(observer):
                 dialling_count = 0
                 play_dialled_number()
 
+            # The phone was taken off the hook, start counting how long it has been.
             if on_hook_count > 0:
                 on_hook_count += 1
 
-            if on_hook_count > 200:
+            if on_hook_count > DOUBLE_TAP_TIMEOUT:
                 # We have not replaced the hook for a while, stop counting
                 on_hook_count = 0
 
