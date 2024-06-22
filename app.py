@@ -29,9 +29,8 @@ def index():
         number = number.replace("-", "").replace("+", "").replace("(", "").replace(")", "")
 
         if file:
-            filename_or_url = file.filename
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            filename_or_url = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename_or_url))
         else:
             filename_or_url = url
 
