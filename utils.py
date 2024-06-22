@@ -1,7 +1,4 @@
-import os
 from pathlib import Path
-
-from werkzeug.utils import secure_filename
 
 from audio_mode import AudioMode
 
@@ -31,8 +28,6 @@ def get_tracks():
     return tracks
 
 
-def write_to_file(audio_mode: AudioMode, file, number: str):
-    filename = secure_filename(file.filename)
-    file.save(os.path.join(UPLOAD_FOLDER, filename))
+def write_to_file(audio_mode: AudioMode, filename_or_url: str, number: str):
     with open(CSV_FILE, "a", encoding="UTF-8") as file:
-        file.write(f"{audio_mode}, {number}, {filename}\n")
+        file.write(f"{audio_mode}, {number}, {filename_or_url}\n")
