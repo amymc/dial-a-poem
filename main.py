@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import math
 import random
+import re
 import subprocess
 import time
 from datetime import datetime, timedelta
 
+import requests
 from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
@@ -35,6 +37,11 @@ audio_mode = AudioMode.POEMS
 track_map = get_tracks()
 
 DOUBLE_TAP_TIMEOUT = 200
+
+# This regex is copied from the flask WTF form validation.
+url_regex = re.compile(
+    r"^[a-z]+://" r"(?P<host>[^\/\?:]+)" r"(?P<port>:[0-9]+)?" r"(?P<path>\/.*?)?" r"(?P<query>\?.*)?$"
+)
 
 
 def start_counting():
@@ -96,7 +103,11 @@ def play_dialled_number():
 
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
+    # Could we just do track.endswith(".mp3") instead? Are there URLs that end in .mp3?
+    if url_regex.match(track):
+        requests.get(track)
+    else:
+        p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
 
 
 def start_listening():
