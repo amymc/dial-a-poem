@@ -17,13 +17,13 @@ def get_tracks():
             if not line.strip():
                 continue
 
-            audio_mode, number, filename = [piece.strip() for piece in line.strip().split(",")]
+            audio_mode, number, filename_or_url = [piece.strip() for piece in line.strip().split(",")]
             audio_mode = AudioMode(audio_mode)
 
             if audio_mode.value not in tracks:
                 tracks[audio_mode.value] = {}
 
-            tracks[audio_mode.value][number] = filename.strip()
+            tracks[audio_mode.value][number] = filename_or_url.strip()
 
     return tracks
 
