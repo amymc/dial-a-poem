@@ -83,7 +83,7 @@ def reset_dialling_count():
 def get_digit_for_count():
     """Returns the digit that was dialled. We do not zero offset. If you dial 1 you get 1!"""
     global count
-    digit = math.ceil((count - 5) / 21.8)
+    digit = math.ceil((count - 5) / 20.6)
 
     if digit == 10:
         digit = 0
