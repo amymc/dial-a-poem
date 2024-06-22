@@ -2,7 +2,7 @@ import re
 
 from flask_wtf import FlaskForm
 from wtforms import FileField, StringField
-from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms.validators import DataRequired, Length, Optional, URL, ValidationError
 
 from audio_mode import AudioMode
 from utils import get_tracks
@@ -27,4 +27,15 @@ class Form(FlaskForm):
         "Desired number",
         validators=[DataRequired(), Length(min=1, max=25), is_numeric_phone_number, is_not_already_existing],
     )
-    file = FileField("MP3", validators=[DataRequired()])
+    file = FileField("MP3", validators=[Optional()])
+    url = StringField("URL", validators=[Optional(), URL()])
+
+    def validate(self, extra_validators=None):
+        valid = super(Form, self).validate(extra_validators)
+        print(valid)
+
+        if not self.file.data and not self.url.data:
+            self.file.errors.append("Either file or URL is required.")
+            valid = False
+
+        return valid
