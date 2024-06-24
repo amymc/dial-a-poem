@@ -27,7 +27,7 @@ class Form(FlaskForm):
         "Desired number",
         validators=[DataRequired(), Length(min=1, max=25), is_numeric_phone_number, is_not_already_existing],
     )
-    file = FileField("MP3", validators=[Optional()])
+    file = FileField("Audio file", validators=[Optional()])
     url = StringField("URL", validators=[Optional(), URL(require_tld=False)])
 
     def validate(self, extra_validators=None):
