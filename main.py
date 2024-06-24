@@ -5,7 +5,6 @@ import re
 import time
 from datetime import datetime, timedelta
 
-import requests
 import vlc
 from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
@@ -105,10 +104,18 @@ def play_dialled_number():
 
     # Could we just do track.endswith(".mp3") instead? Are there URLs that end in .mp3?
     if url_regex.match(track):
-        requests.get(track)
+        audio_process.set_mrl(track)
+        # Alternatively, use requests to first download and then play the audio:
+        # if response.headers["Content-Type"] != "audio/mpeg":
+        #     return
+        #
+        # with tempfile.NamedTemporaryFile() as f:
+        #     f.write(response.content)
+        #     audio_process.set_mrl(f.name)
+        #     audio_process.play()
     else:
         audio_process.set_mrl(AUDIO_DIR / audio_mode / track)
-        audio_process.play()
+    audio_process.play()
 
 
 def start_listening():
