@@ -31,7 +31,7 @@ on_hook = True
 # If so, we change the audio mode.
 on_hook_count = 0
 
-p = None  # The process that handles playing the mp3
+audio_process = None  # The process that handles playing the mp3
 
 audio_mode = AudioMode.POEMS
 track_map = get_tracks()
@@ -72,7 +72,7 @@ def stop_counting():
 
 
 def reset_dialling_count():
-    global dialling_count, p
+    global dialling_count, audio_process
     # Reset to 1, which means we will start continuously counting again.
     # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
     dialling_count = 1
@@ -92,7 +92,7 @@ def get_digit_for_count():
 
 
 def play_dialled_number():
-    global audio_mode, digit_buffer, p
+    global audio_mode, digit_buffer, audio_process
 
     if not digit_buffer:
         return
@@ -107,21 +107,21 @@ def play_dialled_number():
     if url_regex.match(track):
         requests.get(track)
     else:
-        p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
+        audio_process = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
 
 
 def start_listening():
     """Called when you take the phone off the hook."""
-    global audio_mode, digit_buffer, on_hook, p
+    global audio_mode, digit_buffer, on_hook, audio_process
     on_hook = False
     digit_buffer = []
 
-    p = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
+    audio_process = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
 
 
 def stop_listening():
     """Called when you replace the phone on the hook."""
-    global counting, count, dialling_count, on_hook, p
+    global counting, count, dialling_count, on_hook, audio_process
 
     on_hook = True
     dialling_count = 0
@@ -145,7 +145,7 @@ def handle_hook_double_tap():
 
 
 def run_main_loop(observer):
-    global count, counting, dialling_count, on_hook_count, p
+    global count, counting, dialling_count, on_hook_count, audio_process
 
     hook_trigger = Button(26)
 
@@ -202,10 +202,10 @@ def run_main_loop(observer):
 
 
 def terminate_running_subprocess():
-    global p
+    global audio_process
 
-    if p and p.poll() is None:
-        p.terminate()
+    if audio_process and audio_process.poll() is None:
+        audio_process.terminate()
 
 
 def main():
