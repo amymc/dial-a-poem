@@ -72,7 +72,7 @@ def stop_counting():
 
 
 def reset_dialling_count():
-    global dialling_count, audio_process
+    global dialling_count
     # Reset to 1, which means we will start continuously counting again.
     # If we reset to 0 we block unnecessarily incrementing and checking for a potential play.
     dialling_count = 1
@@ -121,7 +121,7 @@ def start_listening():
 
 def stop_listening():
     """Called when you replace the phone on the hook."""
-    global counting, count, dialling_count, on_hook, audio_process
+    global counting, count, dialling_count, on_hook
 
     on_hook = True
     dialling_count = 0
@@ -145,7 +145,7 @@ def handle_hook_double_tap():
 
 
 def run_main_loop(observer):
-    global count, counting, dialling_count, on_hook_count, audio_process
+    global count, counting, dialling_count, on_hook_count
 
     hook_trigger = Button(26)
 
