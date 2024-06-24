@@ -2,11 +2,11 @@
 import math
 import random
 import re
-import subprocess
 import time
 from datetime import datetime, timedelta
 
 import requests
+import vlc
 from gpiozero import Button
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
@@ -31,7 +31,7 @@ on_hook = True
 # If so, we change the audio mode.
 on_hook_count = 0
 
-audio_process = None  # The process that handles playing the mp3
+audio_process = vlc.MediaPlayer()
 
 audio_mode = AudioMode.POEMS
 track_map = get_tracks()
@@ -107,7 +107,8 @@ def play_dialled_number():
     if url_regex.match(track):
         requests.get(track)
     else:
-        audio_process = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / track])
+        audio_process.set_mrl(AUDIO_DIR / audio_mode / track)
+        audio_process.play()
 
 
 def start_listening():
@@ -116,7 +117,8 @@ def start_listening():
     on_hook = False
     digit_buffer = []
 
-    audio_process = subprocess.Popen(["mpg123", AUDIO_DIR / audio_mode / "off-hook.mp3"])
+    audio_process.set_mrl(AUDIO_DIR / audio_mode / "off-hook.mp3")
+    audio_process.play()
 
 
 def stop_listening():
@@ -134,6 +136,8 @@ def stop_listening():
 def handle_hook_double_tap():
     """Checks if the hook has been replaced twice in rapid succession. If so, toggle between poem and joke modes."""
     global audio_mode, on_hook_count
+
+    print(f"{on_hook_count=}")
 
     if on_hook_count == 0:
         # Hook just replaced, allow incrementing count in main loop
@@ -204,8 +208,8 @@ def run_main_loop(observer):
 def terminate_running_subprocess():
     global audio_process
 
-    if audio_process and audio_process.poll() is None:
-        audio_process.terminate()
+    if audio_process.is_playing():
+        audio_process.stop()
 
 
 def main():
